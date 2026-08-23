@@ -17,8 +17,5 @@ Break entire mountains with a single swing! Full control over shapes, directions
 - Clean & Optimized Breaking Logic
 - Aternos Support
 
-## Installation
-  Place the script inside: `Skript/scripts/`
-
 ## Compatibility
 Fully compatible with both Java and Bedrock editions.
