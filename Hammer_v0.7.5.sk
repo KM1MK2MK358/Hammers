@@ -1,0 +1,129 @@
+# Made By Kouro
+
+on load:
+    # This line creates a list of blocks that the hammer is not allowed to break.
+    set {Hammers.UnbreakableBlocks::*} to obsidian, end_portal_frame, command_block, barrier, structure_block, spawner, ender_chest, shulker_box and end_portal
+    
+    set {Hammers.Types::*} to "3x3", "3x3x3", "5x5" and "5x5x3"
+
+    # 3x3
+    set {Hammers.Config.3x3.Model} to 1245123
+    set {Hammers.ModelToType.1245123} to "3x3"
+    
+    set {Hammers.Config.3x3.Up::*} to vector(-1, 0, 1) and vector(1, 0, -1)
+    set {Hammers.Config.3x3.Down::*} to vector(-1, 0, 1) and vector(1, 0, -1)
+    set {Hammers.Config.3x3.South::*} to vector(1, 1, 0) and vector(-1, -1, 0)
+    set {Hammers.Config.3x3.North::*} to vector(1, 1, 0) and vector(-1, -1, 0)
+    set {Hammers.Config.3x3.East::*} to vector(0, 1, -1) and vector(0, -1, 1)
+    set {Hammers.Config.3x3.West::*} to vector(0, 1, -1) and vector(0, -1, 1)
+
+    # 3x3x3
+    set {Hammers.Config.3x3x3.Model} to 1245174
+    set {Hammers.ModelToType.1245174} to "3x3x3"
+
+    set {Hammers.Config.3x3x3.Up::*} to vector(-1, 0, 1) and vector(1, 2, -1)
+    set {Hammers.Config.3x3x3.Down::*} to vector(-1, 0, 1) and vector(1, -2, -1)
+    set {Hammers.Config.3x3x3.South::*} to vector(1, -1, 0) and vector(-1, 1, 2)
+    set {Hammers.Config.3x3x3.North::*} to vector(1, -1, 0) and vector(-1, 1, -2)
+    set {Hammers.Config.3x3x3.East::*} to vector(0, -1, -1) and vector(2, 1, 1)
+    set {Hammers.Config.3x3x3.West::*} to vector(0, -1, -1) and vector(-2, 1, 1)
+
+    # 5x5
+    set {Hammers.Config.5x5.Model} to 1245176
+    set {Hammers.ModelToType.1245176} to "5x5"
+    
+    set {Hammers.Config.5x5.Up::*} to vector(-2, 0, 2) and vector(2, 0, -2)   
+    set {Hammers.Config.5x5.Down::*} to vector(-2, 0, 2) and vector(2, 0, -2)
+    set {Hammers.Config.5x5.South::*} to vector(-2, -1, 0) and vector(2, 3, 0)
+    set {Hammers.Config.5x5.North::*} to vector(-2, -1, 0) and vector(2, 3, 0)
+    set {Hammers.Config.5x5.East::*} to vector(0, -1, -2) and vector(0, 3, 2)
+    set {Hammers.Config.5x5.West::*} to vector(0, -1, -2) and vector(0, 3, 2)
+
+    # 5x5x3
+    set {Hammers.Config.5x5x3.Model} to 1245186
+    set {Hammers.ModelToType.1245186} to "5x5x3"
+
+    set {Hammers.Config.5x5x3.Up::*} to vector(-2, 0, 2) and vector(2, 2, -2)  
+    set {Hammers.Config.5x5x3.Down::*} to vector(-2, 0, 2) and vector(2, -2, -2)
+    set {Hammers.Config.5x5x3.South::*} to vector(2, -1, 0) and vector(-2, 3, 2)
+    set {Hammers.Config.5x5x3.North::*} to vector(2, -1, 0) and vector(-2, 3, -2)
+    set {Hammers.Config.5x5x3.East::*} to vector(0, -1, -2) and vector(2, 3, 2)
+    set {Hammers.Config.5x5x3.West::*} to vector(0, -1, -2) and vector(-2, 3, 2)
+
+    
+# /hammer (diamond_pickaxe) (3x3|3x3x3) [player]
+command /hammer <item> <string> [<player>]:
+    # Item > Hammer Type > Player
+    permission: op
+    trigger:
+        set {_p} to sender
+        if arg-3 is set:
+            set {_p} to arg-3
+        else:
+            if sender is a player:
+                set {_p} to player
+            else:
+                send "&b&l[Hammers] &r&cYou must specify a player when running this command from console." to sender
+                stop
+
+        if {Hammers.Types::*} doesn't contain arg-2:
+            send "&cInvalid hammer type! Available types: %{Hammers.Types::*}%" to sender
+            stop
+        set {_model} to {Hammers.Config.%arg-2%.Model}
+        give arg-1 named "&fHammer %arg-2%" with custom model data {_model} to {_p}
+
+function getOffsets(type: text, pitch: number, facing: text) :: objects:
+    if {_pitch} < -60:
+        return {Hammers.Config.%{_type}%.Up::*}
+    else if {_pitch} > 60: 
+        return {Hammers.Config.%{_type}%.Down::*}
+    else:
+        if {_facing} is "south":
+            return {Hammers.Config.%{_type}%.South::*}
+        else if {_facing} is "north":
+            return {Hammers.Config.%{_type}%.North::*}
+        else if {_facing} is "east":
+            return {Hammers.Config.%{_type}%.East::*}
+        else if {_facing} is "west":
+            return {Hammers.Config.%{_type}%.West::*}
+
+function break_block_at(loc: location, hammerType: text, pitch: number, facing: text, p: player):
+    set {_offsets::*} to getOffsets({_hammerType}, {_pitch}, {_facing})
+
+    set {_loc1} to location at (x-coordinate of {_loc}) + x of {_offsets::1}, (y-coordinate of {_loc}) + y of {_offsets::1}, (z-coordinate of {_loc}) + z of {_offsets::1} in world of {_loc}
+    set {_loc2} to location at (x-coordinate of {_loc}) + x of {_offsets::2}, (y-coordinate of {_loc}) + y of {_offsets::2}, (z-coordinate of {_loc}) + z of {_offsets::2} in world of {_loc}
+    
+    set {_blocks::*} to all blocks within {_loc1} and {_loc2}
+    sort {_blocks::*} in ascending order by distance between input and {_p}
+    loop {_blocks::*}:
+        if {_p}'s tool is air:
+            stop loop
+        mineBlock({_p}, loop-value)
+
+function mineBlock(p: player, loc: location):
+    set {_block} to block at {_loc}
+    if {_block} is air:
+        stop
+    if {_block} is bedrock:
+        stop
+    if {Hammers.UnbreakableBlocks::*} contains type of {_block}:
+        stop
+    set {_loss} to 1 if chance of 1 / (1 + level of unbreaking on {_p}'s tool) otherwise 0
+
+    if {_p}'s tool is unbreakable:
+        set {_loss} to 0
+    if {_p}'s gamemode is creative:
+        set {_loss} to 0
+        delete block at {_loc}
+    else:
+        break block at {_loc} naturally using {_p}'s tool
+
+    damage {_p}'s tool by {_loss}
+    delete {_p}'s tool if durability of {_p}'s tool <= 1
+
+on break:
+    if player's tool isn't air:
+        set {_model} to custom model data of player's tool
+        set {_type} to {Hammers.ModelToType.%{_model}%}
+        if {_type} is set:
+            break_block_at(location of event-block, {_type}, pitch of player, "%horizontal facing of player%", player)
