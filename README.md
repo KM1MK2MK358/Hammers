@@ -1,7 +1,5 @@
 # Hammers.sk
-
-## About the script
-Break entire mountains with a single swing! Full control over shapes, directions, and durability. Fully customizable—add hammers or tweak sizes without touching core code. Just swing and watch it all fall!
+Hammers is a script for Skript that lets you break large areas of blocks in a single swing, with full control over the shape and size of the break area.
 
 ## Requirements
 - [Skript](https://modrinth.com/plugin/skript) - For running the script.
