@@ -7,7 +7,7 @@ Hammers is a script for Skript that lets you break large areas of blocks in a si
 ## Download
 You can find the downloads for each version with their release notes in the [releases page](https://github.com/KM1MK2MK358/Hammers/releases).
 
-You can also download it from SkUnity here:[Hammers.sk](https://forums.skunity.com/resources/hammers-sk.1898/)
+You can also download it from SkUnity here: [Hammers.sk](https://forums.skunity.com/resources/hammers-sk.1898/).
 
 ## Developers
 Fully made by Kouro
