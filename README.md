@@ -1,3 +1,5 @@
+<img width="1776" height="592" alt="Hammers-Banner" src="https://github.com/user-attachments/assets/b37c164b-b36f-45bd-b269-f690fb398686" />
+
 # Hammers.sk
 Hammers is a script for Skript that lets you break large areas of blocks in a single swing, with full control over the shape and size of the break area.
 
