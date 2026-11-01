@@ -4,5 +4,8 @@ Hammers is a script for Skript that lets you break large areas of blocks in a si
 ## Requirements
 - [Skript](https://modrinth.com/plugin/skript) - For running the script.
 
+## Download
+You can find the downloads for each version with their release notes in the [releases page](https://github.com/KM1MK2MK358/Hammers/releases).
+
 ## Compatibility
 Fully compatible with both Java and Bedrock editions.
